@@ -1,0 +1,52 @@
+import 'package:flutter/material.dart';
+
+class ChunkedProgressBar extends StatelessWidget {
+  final int totalChunks;
+  final int filledChunks;
+  final double barWidth;
+
+  const ChunkedProgressBar({
+    Key? key,
+    required this.totalChunks,
+    required this.filledChunks,
+    this.barWidth = 300,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    List<Widget> chunks = List.generate(
+      totalChunks,
+      (index) => Expanded(
+        child: Container(
+          margin: EdgeInsets.symmetric(horizontal: 2),
+          height: 20,
+          decoration: BoxDecoration(
+            color: index < filledChunks ? Colors.blue : Colors.grey[300],
+            borderRadius: BorderRadius.circular(5),
+          ),
+        ),
+      ),
+    );
+
+    return Container(
+      width: barWidth,
+      child: Row(
+        children: chunks,
+      ),
+    );
+  }
+}
+
+void main() {
+  runApp(
+    MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: Text('Chunked Progress Bar')),
+        body: Center(
+          // Progress bar with 10 chunks, of which 7 are filled
+          child: ChunkedProgressBar(totalChunks: 10, filledChunks: 7),
+        ),
+      ),
+    ),
+  );
+}
